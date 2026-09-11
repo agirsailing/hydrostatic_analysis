@@ -15,7 +15,6 @@ The code builds on the hydrostatics routines used in the course **SD2721 Ship De
 - [Quick start](#quick-start)
 - [Converting an STL file to `.bri`](#converting-an-stl-file-to-bri)
 - [How it works](#how-it-works)
-- [Limitations](#limitations)
 - [The britfair (`.bri`) format](#the-britfair-bri-format)
 - [Credits](#credits)
 
@@ -127,18 +126,6 @@ The converter works best when the mesh was exported so its vertices lie on trans
    $$V = \int A(x)\,dx \qquad A_{wp} = \int b(x)\,dx \qquad T = KG - \eta_3$$
 
 `CalculateHydrostatics` also computes the centre of buoyancy, $BM_0$, $KB_0$ and $GM_0$. These are available in the `HS` struct but are not printed by the main script.
-
-## Limitations
-
-- **Upright and even keel only.** Heel and trim are both fixed at zero, and only vertical force balance is solved. As a result, `LCG`, `TCG` and `KG` do **not** change the draught, waterplane area or volume in the output table. They only matter for the stability values in `HS`.
-- **Calm water.** `WaveSurface.m` supports regular waves, but `simpleHydrostatics.m` does not use them.
-- **The mass range may stop short of `mass_max`.** The masses are generated as `mass_min:mass_step:mass_max`, so the last value can be below `mass_max`.
-- **`fzero` needs a sign change** between −8 m and +8 m. It fails with *"function values at the interval endpoints must differ in sign"* in two cases:
-  - the mass is larger than the buoyancy of the fully submerged hull,
-  - the hull is very large, or `KG` is more than a few metres.
-
-  In those cases, reduce the mass range or widen the search interval.
-- **Accuracy depends on section spacing.** More stations along the hull give better results.
 
 ## The britfair (`.bri`) format
 
